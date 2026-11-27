@@ -1,30 +1,46 @@
 import { StyleSheet, View } from 'react-native';
-import { Host, FloatingActionButton, Icon } from '@expo/ui/jetpack-compose';
-import { clip, Shapes, size } from '@expo/ui/jetpack-compose/modifiers';
+import { Host, Button as ComposeButton, TextButton, Icon, Row, Text } from '@expo/ui/jetpack-compose';
 
 type Props = {
-  onPress: () => void;
+  label: string;
+  theme?: 'primary';
+  onPress?: () => void;
 };
 
-export default function CircleButton({ onPress }: Props) {
+export default function Button({ label, theme, onPress }: Props) {
+  if (theme === 'primary') {
+    return (
+      <View style={styles.buttonContainer}>
+        <Host matchContents>
+          <ComposeButton
+            onClick={onPress}
+            colors={{ containerColor: '#ffd33d', contentColor: '#25292e' }}>
+            <Row verticalAlignment="center" horizontalArrangement={{ spacedBy: 8 }}>
+              <Icon source={require('@expo/material-symbols/image.xml')} size={18} tint="#25292e" />
+              <Text color="#25292e">{label}</Text>
+            </Row>
+          </ComposeButton>
+        </Host>
+      </View>
+    );
+  }
+
   return (
-    <View style={styles.circleButtonContainer}>
+    <View style={styles.buttonContainer}>
       <Host matchContents>
-        <FloatingActionButton
-          containerColor="#ffd33d"
-          onClick={onPress}
-          modifiers={[size(84, 84), clip(Shapes.Circle)]}>
-          <FloatingActionButton.Icon>
-            <Icon source={require('@expo/material-symbols/add.xml')} size={38} tint="#25292e" />
-          </FloatingActionButton.Icon>
-        </FloatingActionButton>
+        <TextButton onClick={onPress} colors={{ contentColor: '#fff' }}>
+          <Text color="#fff">{label}</Text>
+        </TextButton>
       </Host>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  circleButtonContainer: {
-    marginHorizontal: 60,
+  buttonContainer: {
+    width: 320,
+    height: 68,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
